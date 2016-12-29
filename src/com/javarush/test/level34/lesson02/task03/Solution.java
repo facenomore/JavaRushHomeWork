@@ -1,7 +1,5 @@
 package com.javarush.test.level34.lesson02.task03;
 
-import java.util.ArrayList;
-
 /* Разложение на множители с помощью рекурсии
 Разложить целое число n > 1 на простые множители.
 Вывести в консоль через пробел все множители в порядке возрастания.
@@ -14,9 +12,18 @@ import java.util.ArrayList;
 */
 public class Solution {
     public static void main(String[] args) {
-
+        new Solution().recursion(132);
     }
 
     public void recursion(int n) {
+        if (n <= 1) return;
+        for (int i = 2; i <= n; i++) {
+            if (n % i == 0) {
+                System.out.print(i + " ");
+                recursion(n / i);
+                break;
+            }
+
+        }
     }
 }
