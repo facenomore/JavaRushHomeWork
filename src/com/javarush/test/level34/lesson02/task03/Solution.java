@@ -12,11 +12,13 @@ package com.javarush.test.level34.lesson02.task03;
 */
 public class Solution {
     public static void main(String[] args) {
-        new Solution().recursion(132);
+        new Solution().recursion(71);
     }
 
     public void recursion(int n) {
         if (n <= 1) return;
+        if (n == 2) System.out.println(2);
+        if (n == 3) System.out.println(3);
         for (int i = 2; i <= n / 2; i++) {
             if (i == n / 2) {
                 System.out.println(n);
