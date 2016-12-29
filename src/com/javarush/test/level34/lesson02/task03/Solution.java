@@ -17,7 +17,11 @@ public class Solution {
 
     public void recursion(int n) {
         if (n <= 1) return;
-        for (int i = 2; i <= n; i++) {
+        for (int i = 2; i <= n / 2; i++) {
+            if (i == n / 2) {
+                System.out.println(n);
+                break;
+            }
             if (n % i == 0) {
                 System.out.print(i + " ");
                 recursion(n / i);
