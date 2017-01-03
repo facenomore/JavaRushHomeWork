@@ -9,10 +9,7 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
     float loadFactor = DEFAULT_LOAD_FACTOR;
 
     int hash(Long k) {
-        int h = 0;
-        h ^= k.hashCode();
-        h ^= (h >>> 20) ^ (h >>> 12);
-        return h ^ (h >>> 7) ^ (h >>> 4);
+        return k.hashCode();
     }
 
     int indexFor(int hash, int length) {
@@ -86,14 +83,7 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
 
     @Override
     public boolean containsValue(String value) {
-        if (value == null) {
-            Entry[] tab = table;
-            for (int i = 0; i < tab.length; i++)
-                for (Entry e = tab[i]; e != null; e = e.next)
-                    if (e.value == null)
-                        return true;
-            return false;
-        }
+        if (value == null) return false;
 
         Entry[] tab = table;
         for (int i = 0; i < tab.length; i++)
@@ -105,29 +95,22 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
 
     @Override
     public void put(Long key, String value) {
-        int hash = hash(key);
-        int i = indexFor(hash, table.length);
-        for (Entry e = table[i]; e != null; e = e.next) {
-            Object k;
-            if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
-                String oldValue = e.value;
-                e.value = value;
-                return;
-            }
-        }
-        addEntry(hash, key, value, i);
+        addEntry(hash(key), key, value, indexFor(hash(key), table.length));
     }
 
     @Override
     public Long getKey(String value) {
-        for (Entry entry : table)
-            if (entry.getValue().equals(value)) return entry.getKey();
+        if (value == null) return 0l;
+        for (Entry aTable : table) {
+            for (Entry e = aTable; e != null; e = e.next)
+                if (value.equals(e.value))
+                    return aTable.getKey();
+        }
         return null;
     }
 
     @Override
     public String getValue(Long key) {
-        Entry entry = getEntry(key);
-        return null == entry ? null : entry.getValue();
+        return null == getEntry(key) ? null : getEntry(key).getValue();
     }
 }
