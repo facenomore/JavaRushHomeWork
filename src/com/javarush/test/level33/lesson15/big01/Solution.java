@@ -51,6 +51,7 @@ public class Solution {
 
     public static void main(String[] args) {
         testStrategy(new HashMapStorageStrategy(), 1000);
+        System.out.println();
         testStrategy(new OurHashMapStorageStrategy(), 1000);
     }
 }

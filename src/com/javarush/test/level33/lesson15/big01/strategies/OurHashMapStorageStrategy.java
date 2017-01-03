@@ -9,42 +9,75 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
     float loadFactor = DEFAULT_LOAD_FACTOR;
 
     int hash(Long k) {
-        int h;
-        return (k == null) ? 0 : (h = k.hashCode()) ^ (h >>> 16);
-
+        int h = 0;
+        h ^= k.hashCode();
+        h ^= (h >>> 20) ^ (h >>> 12);
+        return h ^ (h >>> 7) ^ (h >>> 4);
     }
 
+
     int indexFor(int hash, int length) {
-        return 0;
+        return hash & (length - 1);
     }
 
     Entry getEntry(Long key) {
-        Entry[] tab;
-        Entry first;
-        int n;
-        Long k;
-        if ((tab = table) != null && (n = tab.length) > 0 &&
-                (first = tab[(n - 1) & hash(key)]) != null) {
-            if (first.hash == hash(key) && ((k = first.key) == key || (key != null && key.equals(k))))
-                return first;
+        if (size == 0) {
+            return null;
+        }
+
+        int hash = (key == null) ? 0 : hash(key);
+        for (Entry e = table[indexFor(hash, table.length)];
+             e != null;
+             e = e.next) {
+            Object k;
+            if (e.hash == hash &&
+                    ((k = e.key) == key || (key != null && key.equals(k))))
+                return e;
         }
         return null;
     }
 
     void resize(int newCapacity) {
-
+        Entry[] oldTable = table;
+        int oldCapacity = oldTable.length;
+        if (oldCapacity == 1 << 30) {
+            threshold = Integer.MAX_VALUE;
+            return;
+        }
+        Entry[] newTable = new Entry[newCapacity];
+        transfer(newTable);
+        table = newTable;
+        threshold = (int) Math.min(newCapacity * loadFactor, 1 << 30 + 1);
     }
 
     void transfer(Entry[] newTable) {
-
+        int newCapacity = newTable.length;
+        for (Entry e : table) {
+            while (null != e) {
+                Entry next = e.next;
+                e.hash = null == e.key ? 0 : hash(e.key);
+                int i = indexFor(e.hash, newCapacity);
+                e.next = newTable[i];
+                newTable[i] = e;
+                e = next;
+            }
+        }
     }
 
     void addEntry(int hash, Long key, String value, int bucketIndex) {
+        if ((size >= threshold) && (null != table[bucketIndex])) {
+            resize(2 * table.length);
+            hash = (null != key) ? hash(key) : 0;
+            bucketIndex = indexFor(hash, table.length);
+        }
 
+        createEntry(hash, key, value, bucketIndex);
     }
 
     void createEntry(int hash, Long key, String value, int bucketIndex) {
-
+        Entry e = table[bucketIndex];
+        table[bucketIndex] = new Entry(hash, key, value, e);
+        size++;
     }
 
     @Override
@@ -54,32 +87,48 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
 
     @Override
     public boolean containsValue(String value) {
-        Entry[] tab = table;
-        String v;
-        if (tab != null && size > 0) {
-            for (int i = 0; i < tab.length; ++i) {
-                for (Entry e = tab[i]; e != null; e = e.next) {
-                    if ((v = e.value) == value ||
-                            (value != null && value.equals(v)))
+        if (value == null) {
+            Entry[] tab = table;
+            for (int i = 0; i < tab.length; i++)
+                for (Entry e = tab[i]; e != null; e = e.next)
+                    if (e.value == null)
                         return true;
-                }
-            }
+            return false;
         }
+
+        Entry[] tab = table;
+        for (int i = 0; i < tab.length; i++)
+            for (Entry e = tab[i]; e != null; e = e.next)
+                if (value.equals(e.value))
+                    return true;
         return false;
     }
 
     @Override
     public void put(Long key, String value) {
-
+        int hash = hash(key);
+        int i = indexFor(hash, table.length);
+        for (Entry e = table[i]; e != null; e = e.next) {
+            Object k;
+            if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
+                String oldValue = e.value;
+                e.value = value;
+                return;
+            }
+        }
+        addEntry(hash, key, value, i);
     }
 
     @Override
     public Long getKey(String value) {
+        for (Entry entry : table)
+            if (entry.getValue().equals(value)) return entry.getKey();
         return null;
     }
 
     @Override
     public String getValue(Long key) {
-        return null;
+        Entry entry = getEntry(key);
+        return null == entry ? null : entry.getValue();
     }
 }
