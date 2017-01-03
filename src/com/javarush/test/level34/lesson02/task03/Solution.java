@@ -29,7 +29,6 @@ public class Solution {
                 recursion(n / i);
                 break;
             }
-
         }
     }
 }
