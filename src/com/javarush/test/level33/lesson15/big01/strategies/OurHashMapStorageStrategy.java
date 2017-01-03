@@ -15,7 +15,6 @@ public class OurHashMapStorageStrategy implements StorageStrategy {
         return h ^ (h >>> 7) ^ (h >>> 4);
     }
 
-
     int indexFor(int hash, int length) {
         return hash & (length - 1);
     }
