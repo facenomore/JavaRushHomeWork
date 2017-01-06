@@ -7,7 +7,7 @@ import java.util.LinkedHashMap;
 Параметризируйте класс Solution, чтобы он мог работать со всеми классами, которые наследуются от HashMap.
 Метод getMap должен возвращать тип поля map.
 */
-public class Solution {
+public class Solution<T extends HashMap> {
     private HashMap map;
 
     public Solution(HashMap map) {
