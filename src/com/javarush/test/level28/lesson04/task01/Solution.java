@@ -4,7 +4,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /* Пишем свою ThreadFactory
-В классе Solution создайте публичный статический класс AmigoThreadFactory, реализующий интерфейс ThreadFactory
+В классе Solution создайте публичный статический класс AmigoThreadFactory,
+реализующий интерфейс ThreadFactory
 1.Реализация интерфейсного метода - создайте и верните трэд, который должен:
 1.1. не быть демоном
 1.2. иметь нормальный приоритет
@@ -23,13 +24,27 @@ firstGroup-pool-1-thread-2
 secondGroup-pool-2-thread-2
 */
 public class Solution {
-        public static class AmigoThreadFactory implements ThreadFactory{
 
-            @Override
-            public Thread newThread(Runnable r) {
-                return null;
-            }
+    public static class AmigoThreadFactory implements ThreadFactory {
+        private static AtomicInteger factoryCount = new AtomicInteger(0);
+        private AtomicInteger numberOfAmigoThreadFactory = new AtomicInteger(0);
+        private AtomicInteger numberOfPull = new AtomicInteger(0);
+
+        public AmigoThreadFactory() {
+            numberOfPull.set(factoryCount.incrementAndGet());
         }
+
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread thread = new Thread(r);
+            thread.setDaemon(false);
+            thread.setPriority(Thread.NORM_PRIORITY);
+            thread.setName(String.format("%s-pool-%s-thread-%d", thread.currentThread().getThreadGroup().getName(),
+                    numberOfPull, numberOfAmigoThreadFactory.incrementAndGet()));
+            return thread;
+        }
+    }
+
     public static void main(String[] args) {
         class EmulateThreadFactoryTask implements Runnable {
             @Override
