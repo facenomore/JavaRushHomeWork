@@ -11,14 +11,17 @@ public class Box extends CollisionObject implements Movable {
     @Override
     public void draw(Graphics graphics) {
         graphics.setColor(Color.ORANGE);
-        graphics.drawRect(getX(), getY(), getWidth(), getHeight());
-        graphics.drawLine(getX(), getY(), getX() + getWidth(), getY() + getHeight());
-        graphics.drawLine(getX() + getWidth(), getY(), getX(), getY() + getHeight());
+
+        int leftUpperCornerX = getX() - getWidth() / 2;
+        int leftUpperCornerY = getY() - getHeight() / 2;
+
+        graphics.drawRect(leftUpperCornerX, leftUpperCornerY, getWidth(), getHeight());
+        graphics.fillRect(leftUpperCornerX, leftUpperCornerY, getWidth(), getHeight());
     }
 
     @Override
     public void move(int x, int y) {
-        setX(getX() + x);
-        setY(getY() + y);
+        this.setX(this.getX() + x);
+        this.setY(this.getY() + y);
     }
 }

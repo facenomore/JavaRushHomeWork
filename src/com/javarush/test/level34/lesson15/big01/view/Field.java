@@ -21,13 +21,13 @@ public class Field extends JPanel {
     }
 
     public void paint(Graphics g) {
-        Wall wall = new Wall(0, 0);
+       /* Wall wall = new Wall(0, 0);
         wall.draw(g);
         Box box = new Box(20, 20);
-        Player player = new Player(0, 0);
+        Player player = new Player(40, 40);
         Home home = new Home(0, 20);
         home.draw(g);
         box.draw(g);
-        player.draw(g);
+        player.draw(g);*/
     }
 }

@@ -34,10 +34,10 @@ public class GameObjects {
 
     public Set<GameObject> getAll() {
         Set<GameObject> gameObjectsSet = new HashSet<>();
-        gameObjectsSet.addAll(walls);
-        gameObjectsSet.addAll(boxes);
-        gameObjectsSet.addAll(homes);
-        gameObjectsSet.add(player);
+        gameObjectsSet.addAll(getWalls());
+        gameObjectsSet.addAll(getBoxes());
+        gameObjectsSet.addAll(getHomes());
+        gameObjectsSet.add(getPlayer());
         return gameObjectsSet;
     }
 }

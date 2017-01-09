@@ -14,22 +14,29 @@ public class LevelLoader {
     }
 
     public GameObjects getLevel(int level) {
-        int tmpLevel = level;
+/*        int tmpLevel = level;
         int x = FIELD_SELL_SIZE / 2;
-        int y = FIELD_SELL_SIZE / 2;
+        int y = FIELD_SELL_SIZE / 2;*/
 
         Set<Wall> walls = new HashSet<>();
         Set<Box> boxes = new HashSet<>();
         Set<Home> homes = new HashSet<>();
         Player player;
 
-        walls.add(new Wall(x, y));
+        walls.add(new Wall(200, 200));
+        walls.add(new Wall(180, 180));
+        walls.add(new Wall(220, 220));
+        boxes.add(new Box(240, 240));
+        homes.add(new Home(80, 80));
+        player = new Player(40, 40);
+
+/*        walls.add(new Wall(x, y));
         walls.add(new Wall(x, y * 2));
         walls.add(new Wall(x, y * 3));
 
         boxes.add(new Box(x * 2, y * 2));
         homes.add(new Home(x * 3, y * 3));
-        player = new Player(x * 4, y * 4);
+        player = new Player(x * 4, y * 4);*/
 
         return new GameObjects(walls, boxes, homes, player);
     }
