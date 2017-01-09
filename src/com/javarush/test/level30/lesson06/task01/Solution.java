@@ -14,7 +14,17 @@ public class Solution {
     }
 
     public static void checkAFlag(D d) {
-        if(d.cs.get(0).bs.get(0).as.get(0).flag){
+        if (d != null
+                && d.cs != null
+                && !d.cs.isEmpty()
+                && d.cs.get(0) != null
+                && d.cs.get(0).bs != null
+                && !d.cs.get(0).bs.isEmpty()
+                && d.cs.get(0).bs.get(0) != null
+                && d.cs.get(0).bs.get(0).as != null
+                && !d.cs.get(0).bs.get(0).as.isEmpty()
+                && d.cs.get(0).bs.get(0).as.get(0) != null
+                && d.cs.get(0).bs.get(0).as.get(0).flag) {
             System.out.println("A's flag is true");
         } else { //all other cases
             System.out.println("Oops!");
@@ -27,6 +37,7 @@ public class Solution {
 
     static class B {
         List<A> as = new ArrayList<>();
+
         {
             as.add(new A());
         }
@@ -34,6 +45,7 @@ public class Solution {
 
     static class C {
         List<B> bs = new ArrayList<>();
+
         {
             bs.add(new B());
         }
@@ -41,6 +53,7 @@ public class Solution {
 
     static class D {
         List<C> cs = new ArrayList<>();
+
         {
             cs.add(new C());
         }
