@@ -4,8 +4,6 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.javarush.test.level34.lesson15.big01.model.Model.FIELD_SELL_SIZE;
-
 public class LevelLoader {
     private Path levels;
 
