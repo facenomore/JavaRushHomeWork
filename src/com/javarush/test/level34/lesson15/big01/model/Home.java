@@ -2,8 +2,6 @@ package com.javarush.test.level34.lesson15.big01.model;
 
 import java.awt.*;
 
-import static com.javarush.test.level34.lesson15.big01.model.Model.FIELD_SELL_SIZE;
-
 public class Home extends GameObject {
     public Home(int x, int y) {
         super(x, y);
