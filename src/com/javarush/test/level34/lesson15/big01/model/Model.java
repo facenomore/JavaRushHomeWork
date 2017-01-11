@@ -35,4 +35,18 @@ public class Model {
 
     public void move(Direction direction) {
     }
+
+    public boolean checkWallCollision(CollisionObject gameObject, Direction direction) {
+        return true;
+    }
+
+    public boolean checkBoxCollision(Direction direction){
+        return true;
+    }
+
+    public void checkCompletion(){
+
+    }
+
+
 }
