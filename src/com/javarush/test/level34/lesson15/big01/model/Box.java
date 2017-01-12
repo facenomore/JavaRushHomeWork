@@ -16,7 +16,7 @@ public class Box extends CollisionObject implements Movable {
         int leftUpperCornerY = getY() - getHeight() / 2;
 
         graphics.drawRect(leftUpperCornerX, leftUpperCornerY, getWidth(), getHeight());
-        graphics.fillRect(leftUpperCornerX, leftUpperCornerY, getWidth(), getHeight());
+        graphics.drawLine(leftUpperCornerX, leftUpperCornerY, getX(), getY());
     }
 
     @Override
