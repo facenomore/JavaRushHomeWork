@@ -1,8 +1,14 @@
 package com.javarush.test.level34.lesson15.big01.model;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.javarush.test.level34.lesson15.big01.model.Model.FIELD_SELL_SIZE;
 
 public class LevelLoader {
     private Path levels;
@@ -12,29 +18,56 @@ public class LevelLoader {
     }
 
     public GameObjects getLevel(int level) {
-/*        int tmpLevel = level;
-        int x = FIELD_SELL_SIZE / 2;
-        int y = FIELD_SELL_SIZE / 2;*/
-
         Set<Wall> walls = new HashSet<>();
         Set<Box> boxes = new HashSet<>();
         Set<Home> homes = new HashSet<>();
-        Player player;
+        Player player = null;
 
-        walls.add(new Wall(200, 200));
-        walls.add(new Wall(180, 180));
-        walls.add(new Wall(220, 220));
-        boxes.add(new Box(240, 240));
-        homes.add(new Home(80, 80));
-        player = new Player(40, 40);
+        if (level > 60) level = level % 60;
+        if (level == 0) level = 60;
+        String maze = String.format("Maze: %d", level);
 
-/*        walls.add(new Wall(x, y));
-        walls.add(new Wall(x, y * 2));
-        walls.add(new Wall(x, y * 3));
+        try (BufferedReader reader = new BufferedReader(new FileReader(levels.toAbsolutePath().toString()))) {
+            while (!maze.equals(reader.readLine())) ;
 
-        boxes.add(new Box(x * 2, y * 2));
-        homes.add(new Home(x * 3, y * 3));
-        player = new Player(x * 4, y * 4);*/
+            reader.readLine();
+            int sizeX = Integer.valueOf(reader.readLine().substring(8, 10));
+            int sizeY = Integer.valueOf(reader.readLine().substring(8, 10));
+            reader.readLine();
+            reader.readLine();
+            reader.readLine();
+
+            for (int i = 0; i < sizeY; i++) {
+                String line = reader.readLine();
+                for (int j = 0; j < sizeX; j++) {
+                    char object = line.charAt(j);
+                    int coordX = FIELD_SELL_SIZE / 2 + FIELD_SELL_SIZE * j;
+                    int coordY = FIELD_SELL_SIZE / 2 + FIELD_SELL_SIZE * i;
+                    switch (object) {
+                        case 'X': {
+                            walls.add(new Wall(coordX, coordY));
+                            break;
+                        }
+                        case '*': {
+                            boxes.add(new Box(coordX, coordY));
+                            break;
+                        }
+                        case '.': {
+                            homes.add(new Home(coordX, coordY));
+                            break;
+                        }
+                        case '@': {
+                            player = new Player(coordX, coordY);
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return new GameObjects(walls, boxes, homes, player);
     }
