@@ -10,7 +10,7 @@ public class Model {
     private EventListener eventListener;
     private GameObjects gameObjects;
     private int currentLevel = 1;
-    private LevelLoader levelLoader = new LevelLoader(Paths.get("res/levels.txt"));
+    private LevelLoader levelLoader = new LevelLoader(Paths.get("../res/levels.txt"));
 
     public void setEventListener(EventListener eventListener) {
         this.eventListener = eventListener;
@@ -44,22 +44,23 @@ public class Model {
 */
 
     public void move(Direction direction) {
-        if (checkBoxCollision(direction)) return;
-        if (checkBoxCollision(direction)) return;
         Player player = gameObjects.getPlayer();
-        int move = FIELD_SELL_SIZE;
+
+        if (checkWallCollision(player, direction)) return;
+        if (checkBoxCollision(direction)) return;
+
         switch (direction) {
             case DOWN:
-                player.move(0, move);
+                player.move(0, FIELD_SELL_SIZE);
                 break;
             case LEFT:
-                player.move(-move, 0);
+                player.move(-FIELD_SELL_SIZE, 0);
                 break;
             case RIGHT:
-                player.move(move, 0);
+                player.move(FIELD_SELL_SIZE, 0);
                 break;
             case UP:
-                player.move(0, -move);
+                player.move(0, -FIELD_SELL_SIZE);
                 break;
         }
 
@@ -74,10 +75,9 @@ public class Model {
     объекта.
      */
     public boolean checkWallCollision(CollisionObject gameObject, Direction direction) {
-        for (Wall wall : gameObjects.getWalls()) {
+        for (Wall wall : gameObjects.getWalls())
             if (gameObject.isCollision(wall, direction))
                 return true;
-        }
         return false;
     }
 
@@ -96,7 +96,43 @@ public class Model {
     объектов и метод checkWallCollision() модели.
     */
     public boolean checkBoxCollision(Direction direction) {
-        return true;
+
+        Player player = gameObjects.getPlayer();
+
+        GameObject stoped = null;
+        for (GameObject gameObject : gameObjects.getAll()) {
+            if (!(gameObject instanceof Player)
+                    && !(gameObject instanceof Home)
+                    && player.isCollision(gameObject, direction))
+                stoped = gameObject;
+        }
+
+        if (stoped == null) return false;
+
+        if (stoped instanceof Box) {
+            Box stopedBox = (Box) stoped;
+            if (checkWallCollision(stopedBox, direction)) return true;
+
+            for (Box box : gameObjects.getBoxes()) {
+                if (stopedBox.isCollision(box, direction)) return true;
+            }
+
+            switch (direction) {
+                case LEFT:
+                    stopedBox.move(-FIELD_SELL_SIZE, 0);
+                    break;
+                case RIGHT:
+                    stopedBox.move(FIELD_SELL_SIZE, 0);
+                    break;
+                case UP:
+                    stopedBox.move(0, -FIELD_SELL_SIZE);
+                    break;
+                case DOWN:
+                    stopedBox.move(0, FIELD_SELL_SIZE);
+                    break;
+            }
+        }
+        return false;
     }
 
 /*
@@ -106,7 +142,16 @@ public class Model {
 */
 
     public void checkCompletion() {
-
+        int homeCount = 0;
+        int boxCount = 0;
+        for (Home home : getGameObjects().getHomes()) {
+            homeCount++;
+            for (Box box : getGameObjects().getBoxes()) {
+                if ((box.getX() == home.getX()) && (box.getY() == home.getY()))
+                    boxCount++;
+            }
+        }
+        if (homeCount == boxCount) eventListener.levelCompleted(currentLevel);
     }
 }
 /*
