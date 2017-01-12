@@ -44,22 +44,25 @@ public class LevelLoader {
                     int coordX = FIELD_SELL_SIZE / 2 + FIELD_SELL_SIZE * j;
                     int coordY = FIELD_SELL_SIZE / 2 + FIELD_SELL_SIZE * i;
                     switch (object) {
-                        case 'X': {
+                        case 'X':
                             walls.add(new Wall(coordX, coordY));
                             break;
-                        }
-                        case '*': {
+
+                        case '*':
                             boxes.add(new Box(coordX, coordY));
                             break;
-                        }
-                        case '.': {
+
+                        case '.':
                             homes.add(new Home(coordX, coordY));
                             break;
-                        }
-                        case '@': {
+
+                        case '&':
+                            boxes.add(new Box(coordX, coordY));
+                            homes.add(new Home(coordX, coordY));
+                            break;
+                        case '@':
                             player = new Player(coordX, coordY);
                             break;
-                        }
                     }
                 }
             }
