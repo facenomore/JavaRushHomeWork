@@ -63,7 +63,6 @@ public class Model {
                 player.move(0, -FIELD_SELL_SIZE);
                 break;
         }
-
         checkCompletion();
     }
 
