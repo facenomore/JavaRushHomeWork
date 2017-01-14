@@ -10,10 +10,11 @@ public class Solution {
     public static void main(String[] args) {
         Model model = new MainModel();
         UsersView usersView = new UsersView();
-        Controller controller = new Controller();
         EditUserView editUserView = new EditUserView();
 
+        Controller controller = new Controller();
         usersView.setController(controller);
+        editUserView.setController(controller);
 
         controller.setModel(model);
         controller.setUsersView(usersView);
@@ -22,5 +23,6 @@ public class Solution {
 
         controller.setEditUserView(editUserView);
         usersView.fireEventOpenUserEditForm(126);
+        editUserView.fireEventUserDeleted(124);
     }
 }
