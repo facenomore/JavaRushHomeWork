@@ -1,5 +1,6 @@
 package com.javarush.test.level33.lesson15.big01;
 
+import com.javarush.test.level33.lesson15.big01.strategies.FileStorageStrategy;
 import com.javarush.test.level33.lesson15.big01.strategies.HashMapStorageStrategy;
 import com.javarush.test.level33.lesson15.big01.strategies.OurHashMapStorageStrategy;
 import com.javarush.test.level33.lesson15.big01.strategies.StorageStrategy;
@@ -50,9 +51,10 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        testStrategy(new HashMapStorageStrategy(), 1000);
+        testStrategy(new HashMapStorageStrategy(), 50);
         System.out.println();
-        testStrategy(new OurHashMapStorageStrategy(), 1000);
+        testStrategy(new OurHashMapStorageStrategy(), 50);
+        testStrategy(new FileStorageStrategy(), 50);
     }
 }
 /*
