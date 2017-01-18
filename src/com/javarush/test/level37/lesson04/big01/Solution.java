@@ -22,5 +22,4 @@ TeenBoy{}
         System.out.println(factory.getPerson(4));
         System.out.println(factory.getPerson(15));
     }
-
 }
