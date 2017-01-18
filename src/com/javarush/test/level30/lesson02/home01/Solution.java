@@ -15,6 +15,16 @@ public class Solution {
     }
 
     public static Number convertNumberToOtherNumerationSystem(Number number, NumerationSystem expectedNumerationSystem) {
+        Integer temp;
+        Integer result = null;
+        try {
+            temp = Integer.valueOf(number.getDigit());
+        } catch (Exception e) {
+            return null;
+        }
+        if (temp <= 0) return null;
+        while (temp > 1) {
+        }
 
         return null;
     }
