@@ -1,6 +1,7 @@
 package com.javarush.test.level37.lesson04.task01;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /* Круговой итератор
 Класс Solution наследуется от ArrayList.
@@ -26,6 +27,20 @@ public class Solution<T> extends ArrayList<T> {
         }
     }
 
-    public class RoundIterator {
+    public class RoundIterator implements Iterator {
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public T next() {
+            return null;
+        }
+
+        @Override
+        public void remove() {
+
+        }
     }
 }
