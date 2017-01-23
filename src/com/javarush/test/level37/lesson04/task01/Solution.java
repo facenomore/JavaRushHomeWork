@@ -1,6 +1,7 @@
 package com.javarush.test.level37.lesson04.task01;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 
 /* Круговой итератор
@@ -27,20 +28,30 @@ public class Solution<T> extends ArrayList<T> {
         }
     }
 
-    public class RoundIterator implements Iterator {
+    @Override
+    public Iterator<T> iterator() {
+        return new RoundIterator();
+    }
+
+    public class RoundIterator implements Iterator<T> {
+        int cursor;
+
         @Override
         public boolean hasNext() {
-            return false;
+            return (Solution.this.size() > 0);
         }
 
         @Override
         public T next() {
-            return null;
+            int i = cursor;
+            if (i >= Solution.this.size()) i = 0;
+            cursor = i + 1;
+            return Solution.this.get(i);
         }
 
         @Override
         public void remove() {
-
+            iterator().remove();
         }
     }
 }
