@@ -10,7 +10,6 @@ public class AdvertisementManager {
 
     public void processVideos(){
         if (storage.list().isEmpty()) throw new NoVideoAvailableException();
-
     }
 }
 /*
