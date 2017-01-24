@@ -10,7 +10,7 @@ import java.util.*;
 1. В методе sort написать компаратор для Stock:
 1.1. Первичная сортировка по name в алфавитном порядке
 1.2. Вторичная сортировка по дате без учета часов, минут, секунд (сверху самые новые),
- потом по прибыли от положительных к отрицательным
+потом по прибыли от положительных к отрицательным
 ... open 125,64 and last 126,74 - тут прибыль = 126,74-125,64
 ... open 125,64 and last 123,43 - тут прибыль = 123,43-125,64
 2. Разобраться с *Format-ами и исправить IllegalArgumentException. Подсказка - это одна строчка.
@@ -33,7 +33,7 @@ public class Solution {
         String[] filepart = {"closed {4}", "open {2} and last {3}"};
 
         ChoiceFormat fileform = new ChoiceFormat(filelimits, filepart);
-        Format[] testFormats = {null, dateFormat, fileform};
+        Format[] testFormats = {null, null, dateFormat, fileform};
         MessageFormat pattform = new MessageFormat("{0}   {1} | {5} {6}");
         pattform.setFormats(testFormats);
 
@@ -52,8 +52,22 @@ public class Solution {
     public static void sort(List<Stock> list) {
         Collections.sort(list, new Comparator<Stock>() {
             public int compare(Stock stock1, Stock stock2) {
+                int result = 0;
+                if ((result = stock1.get("name").toString().compareTo(stock2.get("name").toString())) != 0)
+                    return result;
+                if ((result = ((Date) stock1.get("date")).compareTo((Date) stock2.get("date"))) != 0) return result;
 
-                return 0;
+                Double change1, change2;
+                if (stock1.containsKey("change")) change1 = (Double) stock1.get("change");
+                else
+                    change1 = (Double) stock1.get("last") - (Double) stock1.get("open");
+
+                if (stock2.containsKey("change")) change2 = (Double) stock2.get("change");
+                else
+                    change2 = (Double) stock2.get("last") - (Double) stock2.get("open");
+
+                if ((result = change2.compareTo(change1)) != 0) return result;
+                return result;
             }
         });
     }
@@ -108,4 +122,3 @@ public class Solution {
         return calendar.getTime();
     }
 }
-
