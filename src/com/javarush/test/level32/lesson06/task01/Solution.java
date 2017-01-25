@@ -1,8 +1,7 @@
 package com.javarush.test.level32.lesson06.task01;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Random;
 
 /* Генератор паролей
 Реализуйте логику метода getPassword, который должен возвращать ByteArrayOutputStream, в котором будут байты пароля.
@@ -16,23 +15,18 @@ wMh7SmNu
 */
 public class Solution {
     public static void main(String[] args) {
-        for (int i = 1; i < 1000; i++) {
-            ByteArrayOutputStream password = getPassword();
-            System.out.println(password.toString());
-        }
+
+        ByteArrayOutputStream password = getPassword();
+        System.out.println(password.toString());
     }
 
     public static ByteArrayOutputStream getPassword() {
-        ArrayList<String> passwords = new ArrayList<>();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        String dict = "abcdefjhijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        Random random = new Random();
 
         String dictSmallLetters = "abcdefjhijklmnopqrstuvwxyz";
         String dictLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String dictDigits = "1234567890";
-        char[] password = new char[8];
-        byte[] bytePassword = new byte[8];
-
 
         int smallLetters = 0;
         int letters = 0;
@@ -40,21 +34,19 @@ public class Solution {
 
         while (true) {
             for (int i = 0; i < 8; i++) {
-                password[i] = dict.toCharArray()[(int) (dict.length() * Math.random())];
-
-                bytePassword[i] = (byte) password[i];
-                if (dictSmallLetters.contains(String.valueOf(password[i]))) smallLetters++;
-                else if (dictLetters.contains(String.valueOf(password[i]))) letters++;
-                else if (dictDigits.contains(String.valueOf(password[i]))) digits++;
+                int tmp = random.nextInt(3);
+                if (tmp == 0) byteArrayOutputStream.write(48 + random.nextInt(10));
+                if (tmp == 1) byteArrayOutputStream.write(65 + random.nextInt(26));
+                if (tmp == 2) byteArrayOutputStream.write(97 + random.nextInt(26));
+                if (dictSmallLetters.contains(String.valueOf(byteArrayOutputStream.toString().substring(byteArrayOutputStream.toString().length() - 1))))
+                    smallLetters++;
+                else if (dictLetters.contains(byteArrayOutputStream.toString().substring(byteArrayOutputStream.toString().length() - 1)))
+                    letters++;
+                else if (dictDigits.contains(byteArrayOutputStream.toString().substring(byteArrayOutputStream.toString().length() - 1)))
+                    digits++;
             }
-            if ((smallLetters > 0) && (letters > 0) && (digits > 0)) {
-                try {
-                    byteArrayOutputStream.write(bytePassword);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
+            if ((smallLetters > 0) && (letters > 0) && (digits > 0)) break;
+            else byteArrayOutputStream.reset();
         }
         return byteArrayOutputStream;
     }
