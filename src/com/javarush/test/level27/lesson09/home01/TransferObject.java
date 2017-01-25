@@ -6,17 +6,11 @@ public class TransferObject {
 
     public synchronized int get() {
         System.out.println("Got: " + value);
-        try {
-            while (!isValuePresent) wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return value;
     }
 
     public synchronized void put(int value) {
         this.value = value;
         System.out.println("Put: " + value);
-        notifyAll();
     }
 }
