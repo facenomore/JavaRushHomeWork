@@ -51,10 +51,10 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        testStrategy(new HashMapStorageStrategy(), 50);
-        System.out.println();
-        testStrategy(new OurHashMapStorageStrategy(), 50);
+        testStrategy(new HashMapStorageStrategy(), 10000);
+        testStrategy(new OurHashMapStorageStrategy(), 10000);
         testStrategy(new FileStorageStrategy(), 50);
+        testStrategy(new OurHashMapStorageStrategy(),10000);
     }
 }
 /*
