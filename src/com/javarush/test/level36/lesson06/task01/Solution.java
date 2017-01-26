@@ -1,4 +1,5 @@
 package com.javarush.test.level36.lesson06.task01;
+import java.util.Collections;
 
 /* Найти класс по описанию
 1. Реализует интерфейс List
@@ -12,6 +13,6 @@ public class Solution {
     }
 
     public static Class getExpectedClass() {
-        return null;
+        return Collections.EMPTY_LIST.getClass();
     }
 }
