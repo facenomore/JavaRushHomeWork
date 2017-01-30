@@ -29,7 +29,7 @@ public class RealEstate {
         activeApartments.add(apartment);
     }
 
-    public synchronized void revalidate() {
+    public void revalidate() {
         activeApartments.clear();
         for (Apartment apartment : allApartments) {
             boolean randomValue = Math.random() * 2 % 2 == 0;
