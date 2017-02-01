@@ -16,7 +16,6 @@ public class Solution {
 
     public static Number convertNumberToOtherNumerationSystem(Number number, NumerationSystem expectedNumerationSystem) {
 
-
         return null;
     }
 }
