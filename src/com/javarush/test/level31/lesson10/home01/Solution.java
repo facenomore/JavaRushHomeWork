@@ -1,5 +1,8 @@
 package com.javarush.test.level31.lesson10.home01;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 
 /* Читаем конфиги
@@ -24,6 +27,31 @@ public class Solution {
     }
 
     public Properties getProperties(String fileName) {
-        return null;
+
+        Properties properties = new Properties();
+        boolean isXMLSuccess;
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(fileName);
+            properties.loadFromXML(fileInputStream);
+            fileInputStream.close();
+            isXMLSuccess = true;
+        } catch (IOException e) {
+            isXMLSuccess = false;
+        }
+
+        if (!isXMLSuccess) {
+            FileInputStream fileInputStream;
+            try {
+                fileInputStream = new FileInputStream(fileName);
+                properties.load(fileInputStream);
+                fileInputStream.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return properties;
     }
 }
