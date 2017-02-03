@@ -1,6 +1,5 @@
 package com.javarush.test.level31.lesson04.home02;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -44,5 +43,19 @@ public class Solution extends SimpleFileVisitor<Path> {
 
     public List<String> getFailed() {
         return failed;
+    }
+
+    @Override
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+        String fileName = file.getFileName().toString();
+        if ((fileName.endsWith(".zip")) || (fileName.endsWith(".rar")))
+            archived.add(file.toString());
+        return super.visitFile(file, attrs);
+    }
+
+    @Override
+    public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+        failed.add(file.toString());
+        return FileVisitResult.SKIP_SUBTREE;
     }
 }
